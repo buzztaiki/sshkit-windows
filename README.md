@@ -1,6 +1,6 @@
 # SSHKit::Windows
 
-Windows support for SSHKit
+Windows support for SSHKit and Capistrano3
 
 ## Installation
 

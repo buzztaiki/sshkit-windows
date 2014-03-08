@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SSHKit::Windows::VERSION
   spec.authors       = ["Taiki Sugawara"]
   spec.email         = ["buzz.taiki@gmail.com"]
-  spec.description   = %q{Windows support for SSHKit}
-  spec.summary       = %q{Windows support for SSHKit}
+  spec.description   = %q{Windows support for SSHKit and Capistrano3}
+  spec.summary       = %q{Windows support for SSHKit and Capistrano3}
   spec.homepage      = "https://github.com/buzztaiki/sshkit-windows"
   spec.license       = "MIT"
 
