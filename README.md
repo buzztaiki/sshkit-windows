@@ -31,4 +31,5 @@ TODO: Write usage instructions here
 ## TODO
 * ssl, kerberos connection
 * local windows
-* monkey patching on and run_locally
+* monkey patching `on` and `run_locally`
+* upload / download
