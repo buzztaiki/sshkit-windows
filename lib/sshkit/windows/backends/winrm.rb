@@ -9,12 +9,13 @@ module SSHKit
         end
 
         def within(directory, &block)
-          # TODO
+          (@pwd ||= []).push directory.to_s
           yield
+        ensure
+          @pwd.pop
         end
 
         def as(who, &block)
-          # TODO
           yield
         end
 
@@ -54,7 +55,7 @@ module SSHKit
           command(*args).tap do |cmd|
             output << cmd
             cmd.started = true
-            winrm.cmd([cmd.command, *cmd.args].join(' ')) do |stdout, stderr|
+            winrm.powershell(cmd.to_command) do |stdout, stderr|
               cmd.stdout = stdout || ''
               cmd.full_stdout = cmd.stdout
               cmd.stderr = stderr || ''
@@ -76,6 +77,11 @@ module SSHKit
         def endpoint
           port = host.port || 5985
           "http://#{host.hostname}:#{port}/wsman"
+        end
+
+        def command(*args)
+          options = args.extract_options!
+          SSHKit::Windows::PowerShellCommand.new(*[*args, options.merge({in: @pwd.nil? ? nil : File.join(@pwd), env: @env, host: @host, user: @user, group: @group})])
         end
       end
     end
