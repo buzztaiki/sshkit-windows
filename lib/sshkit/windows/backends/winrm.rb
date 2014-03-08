@@ -56,10 +56,14 @@ module SSHKit
             output << cmd
             cmd.started = true
             winrm.powershell(cmd.to_command) do |stdout, stderr|
-              cmd.stdout = stdout || ''
-              cmd.full_stdout = cmd.stdout
-              cmd.stderr = stderr || ''
-              cmd.full_stderr = cmd.stderr
+              stdout ||= ''
+              stderr ||= ''
+
+              cmd.stdout = stdout
+              cmd.stderr = stderr
+              cmd.full_stdout << stdout
+              cmd.full_stderr << stderr
+
               output << cmd
             end
           end
