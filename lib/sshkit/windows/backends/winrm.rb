@@ -55,7 +55,7 @@ module SSHKit
           command(*args).tap do |cmd|
             output << cmd
             cmd.started = true
-            winrm.powershell(cmd.to_command) do |stdout, stderr|
+            res = winrm.powershell(cmd.to_command) do |stdout, stderr|
               stdout ||= ''
               stderr ||= ''
 
@@ -66,6 +66,9 @@ module SSHKit
 
               output << cmd
             end
+            cmd.stdout = ''
+            cmd.stderr = ''
+            cmd.exit_status = res[:exitcode]
           end
         end
 
