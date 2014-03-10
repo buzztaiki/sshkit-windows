@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path('../lib', File.dirname(__FILE__))
+
+require 'sshkit/dsl'
+require 'sshkit/windows'
+
+SSHKit.config.backend = SSHKit::Windows::Backend::WinRM
+SSHKit.config.output_verbosity = 'debug'
+
+unless ARGV.size == 3
+  $stderr.puts "usage: $0 HOSTNAME USER PASSWORD"
+  exit 1
+end
+
+hostname, user, password = ARGV
+host = SSHKit::Host.new(hostname: hostname, user: user, password: password)
+
+on host do
+  fname = File.basename($0)
+  upload!($0, "c:/Users/#{user}/Desktop")
+  download!("c:/Users/#{user}/Desktop/#{fname}", '/tmp')
+  open("/tmp/#{fname}").each do |line|
+    print line
+  end
+end

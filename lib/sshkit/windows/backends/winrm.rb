@@ -49,6 +49,16 @@ module SSHKit
           _execute(*[*args, options]).full_stdout.strip
         end
 
+        def upload!(local, remote, options = {})
+          # summarizer = transfer_summarizer('Uploading')
+          winrmcp.upload(local, remote, options)
+        end
+
+        def download!(remote, local=nil, options = {})
+          # summarizer = transfer_summarizer('Downloading')
+          winrmcp.download(remote, local, options)
+        end
+
         private
 
         def _execute(*args)
@@ -79,6 +89,10 @@ module SSHKit
             user: host.username,
             pass: host.password,
             basic_auth_only: true)
+        end
+
+        def winrmcp
+          @winrmcp ||= SSHKit::Windows::WinRMCP.new(winrm)
         end
 
         def endpoint
